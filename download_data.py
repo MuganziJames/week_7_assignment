@@ -36,7 +36,15 @@ def download_compas_data(save_path='data/'):
         # Display basic info
         print("\n=== Dataset Overview ===")
         print(f"Total records: {len(df):,}")
-        print(f"Date range: {df['c_jail_in'].min()} to {df['c_jail_in'].max()}")
+        
+        # Safe date range display (handle NaN values)
+        if 'c_jail_in' in df.columns:
+            try:
+                date_col = df['c_jail_in'].dropna()
+                if len(date_col) > 0:
+                    print(f"Date range: {date_col.min()} to {date_col.max()}")
+            except:
+                print("Date range: Unable to determine (mixed data types)")
         
         if 'race' in df.columns:
             print(f"\nRace distribution:")
